@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Some bird</title>
+</head>
+<body>
+<script src="Player.js"></script>
+<script src="Tube.js"></script>
+<script>
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d");
+    canvas.width = 400;
+    canvas.height = 490;
+    document.body.appendChild(canvas);
+
+    var keysDown = {};
+    var player = new Player();
+    var tube = new Tube();
+    var timeCheck = 0;
+    var jump = false;
+    var start= false;
+
+
+    addEventListener("keydown", function(e) {
+        keysDown[e.keyCode] = true;
+        start = true;
+    }, false);
+    addEventListener("keyup", function(e) {
+        delete keysDown[e.keyCode];
+        jump = false;
+    }, false);
+
+    var reset = function() {
+        start = false;
+        player.reset();
+        spawnTube();
+    }
+
+    var update = function(delta) {
+        if (start) {
+            player.update(delta);
+            updateTube(delta);
+        }
+
+    }
+
+    var render = function() {
+        ctx.fillStyle = "rgb(113, 197, 207)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        player.render();
+        renderTube();
+    }
+
+    var main = function() {
+        var now = Date.now();
+        var delta = now - then;
+
+        update(delta);
+        render(delta);
+
+        then = now;
+    }
+
+    reset();
+    var then = Date.now();
+    setInterval(main, 1);
+</script>
+</body>
+</html>
