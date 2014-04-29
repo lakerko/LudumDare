@@ -16,23 +16,29 @@ Player.prototype.reset = function() {
 Player.prototype.update = function(delta) {
     if (keysDown[32] && !jump) {
         jump = true;
-        this.velocity = 5;
+        this.velocity = 10;
         this.y -= 2;
     }
-    this.velocity -= this.acceleration * (delta / 500);
-
+    this.velocity -= this.acceleration * (delta / 100);
 
     this.y -= this.velocity;
 
-
     if (this.y >= canvas.height || this.y <= 0) {
-        reset();
+        gameOver = true;
     }
 }
 
-Player.prototype.render = function() {
-    ctx.fillStyle = "rgb(200, 200, 200)";
-    ctx.fillRect(this.x, this.y, 50 , 50);
+Player.prototype.render = function(delta) {
+    timeCounter += delta;
+    if (timeCounter >= 1) {
+        timeCounter = 0;
+        animationCrop++;
+
+        if (animationCrop * this.width >= batA.width) {
+            animationCrop = 0;
+        }
+        ctx.drawImage(batA, animationCrop * this.width, 0, this.width, this.height, this.x, this.y, this.width, this.height);
+    }
 }
 
 Player.prototype.collisionDetection = function() {
@@ -42,8 +48,15 @@ Player.prototype.collisionDetection = function() {
                 aTubes[i].x <= this.x + this.width &&
                 this.y <= aTubes[i].y + aTubes[i].height &&
                 aTubes[i].y <= this.y + this.height) {
-                reset();
+                gameOver = true;
             }
         }
+    }
+}
+
+Player.prototype.scoreKeeper = function() {
+    if (aTubes[0].x <= 20 && !scoreChecker) {
+        score++;
+        scoreChecker = true;
     }
 }
