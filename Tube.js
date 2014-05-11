@@ -23,14 +23,13 @@ function spawnTube() {
 }
 
 function updateTube(delta) {
-    var time = 0;
+    var movementPerTime = 0;
     for (var i = 0; i < aTubes.length; i++) {
         if (i % 2 == 0) {
-            time = 300 * (delta / 1000);
-            aTubes[i].x -= time;
-            aTubes[i + 1].x -= time;
+            movementPerTime = 0.25 * delta;
+            aTubes[i].x -= movementPerTime;
+            aTubes[i + 1].x -= movementPerTime;
         }
-
         if ( aTubes[i].x < canvas.width) {
             if (aTubes[i].x + aTubes[i].width <= 0) {
                 var randomY = randomTubeY();
@@ -52,11 +51,13 @@ function renderTube() {
     for (var i = 0; i < aTubes.length; i++){
         if (aTubes[i].x < canvas.width) {
             if (i % 2 == 0){
-                //ctx.drawImage(tubeUp, 0, Math.abs(aTubes[i].y) , 100, 300 - Math.abs(aTubes[i].y), aTubes[i].x, 0, 100, Math.abs(aTubes[i].y));
-                ctx.drawImage(tubeUp, aTubes[i].x, aTubes[i].y);
+                ctx.drawImage(bg, aTubes[i].x, 300 - Math.abs(aTubes[i].y) - 20, 100, 20, aTubes[i].x, 300 - Math.abs(aTubes[i].y) - 20, 100, 20);
+                ctx.drawImage(bg, aTubes[i].x + 90, 0, 20, 300 - Math.abs(aTubes[i].y), aTubes[i].x + 90, 0, 20, 300 - Math.abs(aTubes[i].y));
+                ctx.drawImage(tubeUp, 0, Math.abs(aTubes[i].y), 100, 300 - Math.abs(aTubes[i].y), aTubes[i].x, 0, 100, 300 - Math.abs(aTubes[i].y));
             } else {
-                //ctx.drawImage(tubeDown, 0, Math.abs(aTubes[i].y) , 100, 300 - Math.abs(aTubes[i].y), aTubes[i].x, aTubes[i].y, 100, Math.abs(aTubes[i].y));
-                ctx.drawImage(tubeDown, aTubes[i].x, aTubes[i].y);
+                ctx.drawImage(bg, aTubes[i].x, aTubes[i].y, 100, 30, aTubes[i].x, aTubes[i].y, 100, 30);
+                ctx.drawImage(bg, aTubes[i].x + 50, aTubes[i].y, 60, 500 - (aTubes[i - 1].y + 300 + 150), aTubes[i].x + 50, aTubes[i].y, 60, 500 - (aTubes[i - 1].y + 300 + 150));
+                ctx.drawImage(tubeDown, 0, 0, 100, 500 - (aTubes[i - 1].y + 300 + 150), aTubes[i].x, aTubes[i].y, 100, 500 - (aTubes[i - 1].y + 300 + 150));
             }
         }
     }
